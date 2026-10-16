@@ -1,0 +1,6 @@
+# Person 2 environment; rembg/3D dependencies belong to Person 1's environment.
+numpy>=1.26,<3
+opencv-contrib-python>=4.10,<6
+mediapipe>=0.10.20,<2
+scikit-learn>=1.5,<2
+joblib>=1.4,<2
