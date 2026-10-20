@@ -5,13 +5,13 @@ ACTION_MAP = {"THUMBS_UP": "JUMP", "FIST": "SLEEP", "OPEN_PALM": "HAPPY"}
 
 
 class GesturePredictor:
-    def __init__(self, path, confidence=0.75):
+    def __init__(self, path, confidence=None):
         import joblib
         bundle = joblib.load(path)  # Only load trusted local model files.
         if bundle.get("feature_version") != FEATURE_VERSION:
             raise ValueError("Model preprocessing does not match this application")
         self.model = bundle["model"]
-        self.threshold = confidence
+        self.threshold = bundle.get("confidence_threshold", 0.75) if confidence is None else confidence
 
     def predict(self, points):
         probabilities = self.model.predict_proba([normalize_landmarks(points)])[0]
