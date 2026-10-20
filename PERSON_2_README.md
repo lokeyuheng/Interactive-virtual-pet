@@ -1,5 +1,7 @@
 # Person 2: CV pipeline
 
+For public-dataset training, see [HAGRID_TRAINING.md](HAGRID_TRAINING.md).
+
 Python 3.10 is available on this machine. From the project root in PowerShell:
 
 ```powershell

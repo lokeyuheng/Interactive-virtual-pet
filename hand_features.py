@@ -43,3 +43,27 @@ class HandTracker:
 
     def close(self):
         self.detector.close()
+
+
+class ImageHandTracker:
+    """Independent dataset images must not reuse VIDEO tracking history."""
+    def __init__(self, model_path):
+        import mediapipe as mp
+        from mediapipe.tasks import python
+        from mediapipe.tasks.python import vision
+        self.mp = mp
+        self.detector = vision.HandLandmarker.create_from_options(
+            vision.HandLandmarkerOptions(
+                base_options=python.BaseOptions(model_asset_path=str(model_path)),
+                running_mode=vision.RunningMode.IMAGE, num_hands=2))
+
+    def detect(self, frame):
+        import cv2
+        result = self.detector.detect(self.mp.Image(
+            image_format=self.mp.ImageFormat.SRGB,
+            data=cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)))
+        return [np.array([[p.x, p.y, p.z] for p in hand], dtype=np.float32)
+                for hand in result.hand_landmarks]
+
+    def close(self):
+        self.detector.close()
